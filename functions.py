@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import statistics as stats
 import itertools
+from datetime import datetime
+from datetime import timedelta
 
 def get_array(input_string):
     with open("textfiles/"+input_string+".txt","r") as f:
@@ -103,14 +105,12 @@ def bin_data(input_array, bins, sigma):
     #deleting all data from the trim
     #setting a variable to keep track of how many elements in a sub list have been deleted
     #because when an item is deleted the index of other items change
-    shift = 0 ;
+    shift = 0
     for i in data:
         for j in range(0,len(index)):
             if(j != 0):
                 if(index[j][0] == index[j-1][0]): shift += 1
                 else: shift = 0
-            #print(index[j])
-            #print(shift)
             del i[index[j][0]][index[j][1]-shift]
     return data
 
@@ -133,3 +133,19 @@ def get_dups(index):
     index.sort()
     index = list(i for i,_ in itertools.groupby(index))
     return index
+
+def strip_time(date):
+    date = datetime.strptime(date, "%m/%d/%y")
+    return date
+
+def date_trim(input_array, dates):
+    data = []
+    for i in input_array:
+        if(strava_time(i[0]) >= dates[0] and strava_time(i[0]) <= dates[1]):
+            data.append(i)
+    if(data != []): return data
+    else: return 0
+
+def strava_time(date):
+    date = datetime.strptime(date[0:10], "%Y-%m-%d")
+    return date
