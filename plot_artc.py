@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import itertools
 import functions
+import statistics as stats
 
 def main():
     #getting and cleaning data
@@ -24,7 +25,7 @@ def main():
 
     #binning data
     print("Total number of runs in selection: ",len(data))
-    sigma = 5.0 #sigma of data to trim
+    sigma = 4.0 #sigma of data to trim
     bins = np.arange(45) #one bin for each km out to 45km
     data = functions.bin_data(data, bins, sigma)
     #splitting up data into variables and joining bins together
@@ -33,7 +34,6 @@ def main():
     distance = list(itertools.chain.from_iterable(data[2]))
     elevation = list(itertools.chain.from_iterable(data[3]))
     PRs = list(itertools.chain.from_iterable(data[4]))
-    print("Number of data points being included: ",len(start))
 
     ##################
     #     plots      #
@@ -65,6 +65,9 @@ def main():
     PR1 = [i for i in PRs if i != 0]
     bins = np.arange(25)
     functions.plot_hist(PR1, bins, 4, "PRs set in a single run", "Number of runs", 0)
+
+    print("Average length of run: "+str(stats.mean(distance))+' km \t'+str(stats.mean(miles))+' miles')
+    print("Average elevation of run: "+str(stats.mean(elevation))+' m \t'+str(stats.mean(feet))+' feet')
 
     plt.show()
     return

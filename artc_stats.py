@@ -29,7 +29,7 @@ for run in activities:
             done.append(run.start_date)
             #keeping size of the arrays to handle small
             if(len(done) > 500):
-                delete(done[0])
+                del done[0]
 
 #writing data
 functions.write_out('data',data)
